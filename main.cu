@@ -388,16 +388,14 @@ vector< vector<T> > matrixSab(vector< vector<T> > &va, vector< vector<T> > &vb)
 template<typename T>
 __global__ void cudaMatrixMult(int m, int n, int k, T* a, T* b, T* c)
 {
-
     int row = threadIdx.y + blockIdx.y * blockDim.y;
     int col = threadIdx.x + blockIdx.x * blockDim.x;
-
-    if ((row < m) && (col < k))
+    if (row < m && col < k)
     {
-        T temp = (T)0;
-        for (int i = 0; i < n; ++i)
-            temp += a[row * n + i] * b[col + i * k];
-        c[row * k + col] = temp;
+        T tmp = (T)0;
+        for (int i = 0; i < n; i++)
+            tmp += a[row * n + i] * b[col + i * k];
+        c[row * k + col] = tmp;
     }
 }
 
